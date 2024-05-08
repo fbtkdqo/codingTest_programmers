@@ -1,21 +1,21 @@
 package lv1;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class ex1 {
 
     public static int solution(String[] friends, String[] gifts) {
-        Map<String, Map<String,Integer>> giftRecords = new HashMap<>();
-        Map<String, Integer> giftScore = new HashMap<>();
-        Map<String, Integer> nextMonthGifts = new HashMap<>();
+        HashMap<String, HashMap<String,Integer>> giftRecords = new HashMap<>();
+        HashMap<String, Integer> giftScore = new HashMap<>();
 
+        //1. 초기값 생성
         for (String friend : friends) {
             giftRecords.put(friend, new HashMap<>());
             giftScore.put(friend, 0);
-            nextMonthGifts.put(friend, 0);
         }
 
+
+        //2. 선물 횟수 / 선물 지수 데이터 생성
         for (String gift : gifts) {
             String[] from = gift.split(" ");
             String giver = from[0];
@@ -26,22 +26,41 @@ public class ex1 {
             giftScore.put(receiver, giftScore.get(receiver) - 1);
         }
 
-        System.out.println(giftScore);
 
+        //3. 결과
+        int answer = 0;
+        String answerName = "";
+        for(String giver:friends){
+            int gift = 0;
+            for(String receiver: friends) {
+                if(!giver.equals(receiver)){
+                    int send = giftRecords.get(giver).get(receiver);
+                    int recv = giftRecords.get(receiver).get(giver);
 
+                    if(send>recv) {
+                        //준 횟수가 많으면 +1
+                        gift++;
+                    } else if (recv == send && giftScore.get(giver)>giftScore.get(receiver)) {
+                        gift++;
+                    }
+                }
+            }
 
+            if(answer > gift) {
+                answer = gift;
+                answerName = giver;
+            }
+        }
 
+        System.out.println(answerName);
 
-
-
-        return giftScore.get(giftRecords.keySet().iterator().next());
+        return answer;
     }
 
-
     public static void main(String[] args) {
-        String[] friends = new String[] {"a", "b", "c", "d", "e", "f"};
+        String[] friends = new String[] {"muzi", "ryan", "frodo", "neo"};
 
-        String[] gifts = new String[] {"a b", "b a", "b a", "a d", "b a", "a b"};
+        String[] gifts = new String[] {"muzi frodo", "muzi frodo", "ryan muzi", "ryan muzi", "ryan muzi", "frodo muzi", "frodo ryan", "neo muzi"};
 
         System.out.println(solution(friends, gifts));
     }
