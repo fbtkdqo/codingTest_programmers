@@ -3,6 +3,9 @@ package lv1;
 import java.util.Scanner;
 
 public class ex3 {
+
+    //[PCCE] 피타고라스의 정리
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int a = sc.nextInt();
